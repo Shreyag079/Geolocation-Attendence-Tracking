@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geofence Notification</title>
+</head>
+<body>
+    <h1>Geofence Notification Example</h1>
+    <button id="checkGeofence">Check Geofence</button>
+
+    <script>
+        // Example function to simulate distance calculation
+        function getDistanceFromGeofence() {
+            // Simulating a random distance (0 to 300 meters)
+            return Math.floor(Math.random() * 300);
+        }
+
+        // Function to send notification
+        function sendNotification(message) {
+            if (Notification.permission === "granted") {
+                new Notification("Notification", {
+                    body: message,
+                    icon: 'https://via.placeholder.com/48' // Replace with your icon URL
+                });
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        new Notification("Notification", {
+                            body: message,
+                            icon: 'https://via.placeholder.com/48' // Replace with your icon URL
+                        });
+                    }
+                });
+            }
+        }
+
+        // Event listener for button click
+        document.getElementById("checkGeofence").addEventListener("click", () => {
+            const distance = getDistanceFromGeofence();
+            console.log("Distance from center:", distance, "meters");
+
+            // Check if the distance is within the geofence
+            if (distance <= 200) {
+                sendNotification("Attendance for the day has been marked");
+            } else {
+                alert("You are outside the geofence.");
+            }
+        });
+    </script>
+</body>
+</html>

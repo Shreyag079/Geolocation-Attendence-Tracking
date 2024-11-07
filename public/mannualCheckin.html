@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Change Employee Location</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        label, p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        select, button, input {
+            padding: 10px;
+            width: 100%;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Panel: Change Employee Location</h1>
+
+        <!-- Select Employee -->
+        <label for="employee-select">Select Employee:</label>
+        <select id="employee-select" onchange="selectEmployee()">
+            <option value="">Select an employee</option>
+            <option value="1">John Doe</option>
+            <option value="2">Jane Smith</option>
+            <option value="3">Alice Johnson</option>
+            <option value="4">Bob Brown</option>
+        </select>
+
+        <!-- Admin Panel to Change Office Location for Selected Employee -->
+        <label for="new-lat">New Office Latitude:</label>
+        <input type="number" id="new-lat" placeholder="Enter new latitude">
+
+        <label for="new-lng">New Office Longitude:</label>
+        <input type="number" id="new-lng" placeholder="Enter new longitude">
+
+        <button onclick="updateOfficeLocation()">Update Location</button>
+
+        <!-- Display Current Location and Status -->
+        <p id="current-location">Please select an employee to change their office location.</p>
+    </div>
+
+    <script>
+        // Example Employees Data
+        const employees = {
+            1: {
+                name: 'John Doe',
+                officeLocation: { lat: 40.7128, lng: -74.0060 }
+            },
+            2: {
+                name: 'Jane Smith',
+                officeLocation: { lat: 34.0522, lng: -118.2437 }
+            },
+            3: {
+                name: 'Alice Johnson',
+                officeLocation: { lat: 51.5074, lng: -0.1278 }
+            },
+            4: {
+                name: 'Bob Brown',
+                officeLocation: { lat: 48.8566, lng: 2.3522 }
+            }
+        };
+
+        let selectedEmployeeId = null; // To store selected employee ID
+
+        // Function to select employee and show their current location
+        function selectEmployee() {
+            selectedEmployeeId = document.getElementById('employee-select').value;
+            if (selectedEmployeeId) {
+                const employee = employees[selectedEmployeeId];
+                document.getElementById('current-location').textContent =
+                    `Selected Employee: ${employee.name}, Current Office Location: Latitude: ${employee.officeLocation.lat}, Longitude: ${employee.officeLocation.lng}`;
+            } else {
+                document.getElementById('current-location').textContent = 'Please select an employee to change their office location.';
+            }
+        }
+
+        // Function to update office location for selected employee
+        function updateOfficeLocation() {
+            if (!selectedEmployeeId) {
+                alert('Please select an employee.');
+                return;
+            }
+
+            const newLat = parseFloat(document.getElementById('new-lat').value);
+            const newLng = parseFloat(document.getElementById('new-lng').value);
+
+            // Validate input
+            if (isNaN(newLat) || isNaN(newLng)) {
+                alert('Please enter valid latitude and longitude.');
+                return;
+            }
+
+            // Update the selected employee's office location
+            employees[selectedEmployeeId].officeLocation = {
+                lat: newLat,
+                lng: newLng
+            };
+
+            // Show the updated location
+            const updatedEmployee = employees[selectedEmployeeId];
+            document.getElementById('current-location').textContent =
+                `Selected Employee: ${updatedEmployee.name}, Updated Office Location: Latitude: ${updatedEmployee.officeLocation.lat}, Longitude: ${updatedEmployee.officeLocation.lng}`;
+
+            alert(`${updatedEmployee.name}'s office location has been updated successfully!`);
+        }
+    </script>
+</body>
+</html>

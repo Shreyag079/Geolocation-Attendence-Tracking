@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation Example</title>
+</head>
+<body>
+    <h1>Geolocation Example</h1>
+    <div id="location"></div>
+    
+    <script>
+        function success(position) {
+            const latitude  = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // Display the coordinates in the HTML
+            document.getElementById('location').innerHTML = 
+                `Latitude: ${latitude}<br>Longitude: ${longitude}`;
+            console.log(`Latitude: ${latitude}`);
+            console.log(`Longitude: ${longitude}`);
+        }
+
+        function error(err) {
+            console.warn(`ERROR(${err.code}): ${err.message}`);
+            document.getElementById('location').innerHTML = 
+                `Unable to retrieve your location. Error: ${err.message}`;
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.watchPosition(success, error, {
+                enableHighAccuracy: true, // Optional: request high accuracy
+                timeout: 10000,           // Optional: timeout after 10 seconds
+                maximumAge: 0             // Optional: do not cache the location
+            });
+        } else {
+            console.log('Geolocation is not supported by this browser.');
+            document.getElementById('location').innerHTML = 
+                'Geolocation is not supported by this browser.';
+        }
+    </script>
+</body>
+</html>
